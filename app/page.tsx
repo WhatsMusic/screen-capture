@@ -49,6 +49,7 @@ const Home: React.FC = () => {
   const drawTimer = useRef<number | null>(null);
 
   const [recording, setRecording] = useState(false);
+  const [started, setStarted] = useState(false); // Neuer State
   const [showHeader, setShowHeader] = useState(true);
   const [webmUrl, setWebmUrl] = useState<string | null>(null);
   const [bitrate, setBitrate] = useState<keyof typeof BITRATES>("8 Mbps");
@@ -57,6 +58,7 @@ const Home: React.FC = () => {
 
   const start = useCallback(async () => {
     if (recording) return;
+    setStarted(true); // Startbutton verschwindet
     try {
       setErr(null);
       setWebmUrl(null);
@@ -130,8 +132,8 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-900 text-white">
-      {/* HEADER */}
-      <header className={`fixed top-0 left-0 right-0 h-12 bg-black/70 backdrop-blur flex items-center gap-4 px-4 transition-transform ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
+      {/* HEADER mit höherem z-Index */}
+      <header className={`fixed top-0 left-0 right-0 h-12 bg-black/70 backdrop-blur flex items-center gap-4 px-4 transition-transform z-50 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
         <h1 className="text-lg font-semibold flex-1 select-none">PiP-Recorder</h1>
         {!recording ? (
           <button onClick={start} className="p-1" title="Start"><Play className="w-6 h-6 text-green-400" /></button>
@@ -153,14 +155,16 @@ const Home: React.FC = () => {
         {showHeader ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
 
-      {/* RECORDING CANVAS */}
-      {recording && (
-        <button onClick={stop} className="fixed bottom-4 left-4 z-50 p-2 bg-red-600 rounded-full shadow-xl" title="Stop Aufnahme">
-          <StopCircle className="w-6 h-6" />
-        </button>
-      )}
-      <main className="pt-14 flex justify-center w-full px-2">
+      {/* RECORDING CANVAS MIT OVERLAY */}
+      <main className="pt-14 flex justify-center w-full px-2 relative">
         <canvas ref={canvasRef} className="w-full max-w-7xl aspect-video rounded-xl shadow-lg bg-black" />
+        {!started && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <button onClick={start} className="px-6 py-3 bg-green-500 rounded-lg text-lg font-semibold">
+              Start Recording
+            </button>
+          </div>
+        )}
       </main>
 
       {/* HIDDEN VIDEO ELEMENTS */}
