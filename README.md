@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- filepath: /Users/robertschulz/Developer/screen-capture/README.md -->
+# Screen Capture & PiP-Recorder
 
-## Getting Started
+Dieses Projekt kombiniert moderne Web-Technologien, um eine fortschrittliche Bildschirmaufnahme zu ermöglichen – inklusive Picture-in-Picture (PiP) für Webcam-Aufnahmen. Dabei wird ausschließlich die Browserumgebung genutzt, sodass keine Desktop-Anwendung (Electron) benötigt wird.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Bildschirmaufnahme (Screen Capture):** Nutzt die Web-API `navigator.mediaDevices.getDisplayMedia` für eine effiziente und flexible Aufnahme.
+- **Kameraaufnahme (Picture-in-Picture):** Bindet eine Webcam-Aufnahme als PiP ein, die simultan mit der Bildschirmaufnahme aufgezeichnet wird.
+- **Audio-Mix:** Ermöglicht das Mischen von Bildschirm- und Mikrofoneingaben.
+- **Flexible Einstellungen:** Bietet Optionen zur Auswahl der Bitrate und dynamische Anpassungen an Audio-Prozesse (z. B. Hochpassfilter und Dynamik-Kompressor).
+- **Client-/Server-Routing:** Dank Next.js erfolgt das Routing und die Darstellung über eine reaktive Weboberfläche.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Voraussetzungen
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Node.js](https://nodejs.org) v16 oder höher (ESM-Modus wird verwendet)
+- Ein moderner Browser, der die benötigten Web-APIs (DisplayMedia, MediaDevices) unterstützt
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+1. **Repository klonen:**
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    git clone https://github.com/dein-benutzername/screen-capture.git
+    cd screen-capture
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Abhängigkeiten installieren:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    ```bash
+    npm install
+    ```
 
-## Deploy on Vercel
+3. **Starten der Anwendung:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Starte den Entwicklungsserver mit:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    ```bash
+    npm run dev
+    ```
+
+    Öffne anschließend [http://localhost:3000](http://localhost:3000) in deinem Browser, um den Screenrecorder zu nutzen.
+
+## Projektstruktur
+
+- `app/`: Enthält alle Next.js-Seiten und Komponenten zur Benutzeroberfläche.
+- `README.md`: Diese Datei.
+- `package.json`: Projektkonfiguration und Skripte für Build, Development und Produktion.
+
+## Troubleshooting
+
+- **Fehlende API-Unterstützung:** Stelle sicher, dass dein Browser die Web APIs wie `getDisplayMedia` unterstützt.
+- **React Hook Warnungen:** Achte darauf, dass alle notwendigen Abhängigkeiten in den React Hooks (z. B. `useCallback`, `useEffect`) korrekt angegeben sind.
+
+## Weiterführende Informationen
+
+- [Next.js Dokumentation](https://nextjs.org/docs)
+- [Web APIs zur Bildschirmaufnahme](https://developer.mozilla.org/docs/Web/API/Screen_Capture_API)
+
+## Lizenz
+
+Dieses Projekt ist lizenziert unter der [MIT Lizenz](LICENSE).
