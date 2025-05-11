@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
-import { Play, StopCircle, ChevronDown, ChevronUp } from "lucide-react";
-
+import RecorderHeader from "./components/RecorderHeader";
+import CanvasOverlay from "./components/CanvasOverlay";
 
 const FPS = 30;
 const BITRATES = {
@@ -49,7 +49,7 @@ const Home: React.FC = () => {
   const drawTimer = useRef<number | null>(null);
 
   const [recording, setRecording] = useState(false);
-  const [started, setStarted] = useState(false); // Neuer State
+  const [started, setStarted] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [webmUrl, setWebmUrl] = useState<string | null>(null);
   const [bitrate, setBitrate] = useState<keyof typeof BITRATES>("8 Mbps");
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
 
   const start = useCallback(async () => {
     if (recording) return;
-    setStarted(true); // Startbutton verschwindet
+    setStarted(true);
     try {
       setErr(null);
       setWebmUrl(null);
@@ -130,48 +130,24 @@ const Home: React.FC = () => {
     setShowHeader(true);
   }, [recording]);
 
+  const toggleHeader = () => setShowHeader((s) => !s);
+
   return (
     <div className="relative min-h-screen bg-gray-900 text-white">
-      {/* HEADER mit höherem z-Index */}
-      <header className={`fixed top-0 left-0 right-0 h-12 bg-black/70 backdrop-blur flex items-center gap-4 px-4 transition-transform z-50 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
-        <h1 className="text-lg font-semibold flex-1 select-none">PiP-Recorder</h1>
-        {!recording ? (
-          <button onClick={start} className="p-1" title="Start"><Play className="w-6 h-6 text-green-400" /></button>
-        ) : (
-          <button onClick={stop} className="p-1" title="Stop"><StopCircle className="w-6 h-6 text-red-500" /></button>
-        )}
-        <select value={bitrate} onChange={(e) => setBitrate(e.target.value as keyof typeof BITRATES)} className="bg-transparent border rounded px-2 py-1 text-sm">
-          {Object.keys(BITRATES).map((label) => (
-            <option key={label} className="text-black">{label}</option>
-          ))}
-        </select>
-        <label className="flex items-center gap-1 text-sm cursor-pointer select-none">
-          <input type="checkbox" checked={gk} onChange={(e) => setGk(e.target.checked)} className="accent-purple-500" /> Echo
-        </label>
-      </header>
-
-      {/* HEADER TOGGLE ICON */}
-      <button onClick={() => setShowHeader((s) => !s)} className="fixed top-2 left-2 z-50 p-1 bg-black/70 rounded-full backdrop-blur">
-        {showHeader ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-
-      {/* RECORDING CANVAS MIT OVERLAY */}
-      <main className="pt-14 flex justify-center w-full px-2 relative">
-        <canvas ref={canvasRef} className="w-full max-w-7xl aspect-video rounded-xl shadow-lg bg-black" />
-        {!started && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button onClick={start} className="px-6 py-3 bg-green-500 rounded-lg text-lg font-semibold">
-              Start Recording
-            </button>
-          </div>
-        )}
-      </main>
-
-      {/* HIDDEN VIDEO ELEMENTS */}
+      <RecorderHeader
+        recording={recording}
+        onStart={start}
+        onStop={stop}
+        bitrate={bitrate}
+        setBitrate={setBitrate}
+        gk={gk}
+        setGk={setGk}
+        showHeader={showHeader}
+        toggleHeader={toggleHeader}
+      />
+      <CanvasOverlay canvasRef={canvasRef} started={started} onStart={start} />
       <video ref={screenVideoRef} className="hidden" muted playsInline />
       <video ref={camVideoRef} className="hidden" muted playsInline />
-
-      {/* DOWNLOAD & ERROR */}
       {webmUrl && (
         <div className="fixed bottom-4 right-4 bg-black/70 px-4 py-2 rounded shadow">
           <a href={webmUrl} download="recording.webm" className="underline text-green-300">Download Video</a>
