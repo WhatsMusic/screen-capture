@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+	// 1-Zeiler reicht schon
 };
 
+// Removed misplaced compilerOptions block
 export default nextConfig;
