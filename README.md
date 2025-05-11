@@ -21,7 +21,7 @@ Dieses Projekt kombiniert moderne Web-Technologien, um eine fortschrittliche Bil
 1. **Repository klonen:**
 
     ```bash
-    git clone https://github.com/dein-benutzername/screen-capture.git
+    git clone https://github.com/WhatsMusic/screen-capture.git
     cd screen-capture
     ```
 
